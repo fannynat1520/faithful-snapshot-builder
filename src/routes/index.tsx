@@ -250,7 +250,7 @@ function Field({ label, children }: { label: string; children: ReactNode }) {
   );
 }
 
-function VacanteForm({ initial, onSave, onDelete }: { initial?: Vacante; onSave: (v: Vacante) => void; onDelete: (id: string) => void }) {
+function VacanteForm({ initial, onSave, onDelete }: { initial?: Vacante | undefined; onSave: (v: Vacante) => void; onDelete: (id: string) => void }) {
   const [f, setF] = useState<Vacante>(
     initial ?? { id: uid(), empresa: "", puesto: "", medio: "", reclutador: "", grupo: "" as Group, estado: "" },
   );
@@ -384,7 +384,7 @@ function Calendar({ vacantes, eventos, setEventos }: { vacantes: Vacante[]; even
   );
 }
 
-function EventoForm({ vacantes, initial, onSave, onDelete }: { vacantes: Vacante[]; initial?: Evento; onSave: (e: Evento) => void; onDelete: (id: string) => void }) {
+function EventoForm({ vacantes, initial, onSave, onDelete }: { vacantes: Vacante[]; initial?: Evento | undefined; onSave: (e: Evento) => void; onDelete: (id: string) => void }) {
   const [f, setF] = useState<Evento>(initial ?? { id: uid(), vacanteId: "", tipo: "", fecha: "", hora: "" });
   const empresas = [...new Set(vacantes.map((v) => v.empresa))];
   const [empresa, setEmpresa] = useState(vacantes.find((v) => v.id === f.vacanteId)?.empresa ?? "");
