@@ -35,6 +35,8 @@ export interface Evento {
 
 export const isAntigua = (v: Vacante) => v.estado === "Descartado";
 
+export const isFeedbackEmpty = (f: Feedback) => !f.ocurrio.trim() && !f.falto.trim() && !f.mejorar.trim();
+
 export const statusTone = (v: Vacante) =>
   v.grupo === "Primer contacto"
     ? "orange"
