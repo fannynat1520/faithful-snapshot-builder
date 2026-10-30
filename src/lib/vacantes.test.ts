@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { hasPendingEvent, isAntigua, statusTone, type Vacante } from "./vacantes";
+import { hasPendingEvent, isAntigua, isFeedbackEmpty, statusTone, type Vacante } from "./vacantes";
 
 const base: Vacante = {
   id: "1", empresa: "A", puesto: "B", medio: "C", reclutador: "D",
@@ -16,5 +16,10 @@ describe("vacantes rules", () => {
     expect(hasPendingEvent("1", [ev], now)).toBe(true);
     expect(hasPendingEvent("1", [{ ...ev, completado: true }], now)).toBe(false);
     expect(hasPendingEvent("1", [{ ...ev, fecha: "2025-12-31" }], now)).toBe(false);
+  });
+  it("feedback sin respuestas cuenta como no registrada", () => {
+    expect(isFeedbackEmpty({ ocurrio: "", falto: "", mejorar: "" })).toBe(true);
+    expect(isFeedbackEmpty({ ocurrio: "  ", falto: "\n", mejorar: "\t " })).toBe(true);
+    expect(isFeedbackEmpty({ ocurrio: "", falto: "Prueba técnica", mejorar: "" })).toBe(false);
   });
 });

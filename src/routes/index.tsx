@@ -10,7 +10,7 @@ import { FormSelect } from "@/components/form-select";
 import { HOURS_24, MINUTES, updateTimePart } from "@/lib/time-options";
 import { cn } from "@/lib/utils";
 import {
-  EVENT_TYPES, STATUS_GROUPS, hasPendingEvent, isAntigua, matches, statusTone,
+  EVENT_TYPES, STATUS_GROUPS, hasPendingEvent, isAntigua, isFeedbackEmpty, matches, statusTone,
   type Evento, type Feedback, type Group, type Vacante,
 } from "@/lib/vacantes";
 
