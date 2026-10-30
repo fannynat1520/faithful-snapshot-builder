@@ -21,7 +21,7 @@ export interface Vacante {
   reclutador: string;
   grupo: Group;
   estado: string;
-  feedback?: Feedback;
+  feedback?: Feedback | undefined;
 }
 
 export interface Evento {
