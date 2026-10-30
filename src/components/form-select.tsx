@@ -12,7 +12,7 @@ type FormSelectProps = {
 };
 
 export function FormSelect({
-  label, value, onValueChange, options, disabled, placeholder = "Selecciona",
+  label, value, onValueChange, options, disabled = false, placeholder = "Selecciona",
 }: FormSelectProps) {
   return (
     <Select required value={value} onValueChange={onValueChange} disabled={disabled}>
