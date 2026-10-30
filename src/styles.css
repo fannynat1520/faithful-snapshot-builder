@@ -56,6 +56,13 @@
   --color-st-yellow: var(--st-yellow);
   --color-st-green: var(--st-green);
   --color-st-gray: var(--st-gray);
+  --color-form-surface: var(--form-surface);
+  --color-form-field: var(--form-field);
+  --color-form-edge: var(--form-edge);
+  --color-form-hover: var(--form-hover);
+  --color-form-selected: var(--form-selected);
+  --color-dialog-overlay: var(--dialog-overlay);
+  --shadow-form: var(--shadow-form);
   --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
   --shadow-glass: var(--shadow-glass);
   --color-sidebar: var(--sidebar);
@@ -95,6 +102,13 @@
   --st-green: oklch(0.86 0.16 145); /* #88E788 */
   --st-gray: oklch(0.87 0 0); /* #D3D3D3 */
   --shadow-glass: 0 8px 32px -8px color-mix(in oklab, var(--glow) 90%, transparent), 0 1px 0 0 oklch(1 0 0 / 0.8) inset;
+  --form-surface: oklch(1 0 0 / 0.94);
+  --form-field: oklch(1 0 0 / 0.78);
+  --form-edge: oklch(0.84 0.025 258 / 0.8);
+  --form-hover: oklch(0.96 0.012 258 / 0.9);
+  --form-selected: oklch(0.93 0.024 258 / 0.9);
+  --dialog-overlay: oklch(0.22 0.02 255 / 0.28);
+  --shadow-form: 0 20px 60px -20px oklch(0.22 0.02 255 / 0.2), 0 1px 0 oklch(1 0 0 / 0.9) inset;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -117,6 +131,13 @@
   --card-foreground: oklch(0.984 0.003 247.858);
   --popover: oklch(0.208 0.042 265.755);
   --popover-foreground: oklch(0.984 0.003 247.858);
+  --form-surface: oklch(0.22 0.025 258 / 0.94);
+  --form-field: oklch(0.27 0.025 258 / 0.78);
+  --form-edge: oklch(0.5 0.025 258 / 0.8);
+  --form-hover: oklch(0.3 0.025 258 / 0.9);
+  --form-selected: oklch(0.35 0.035 258 / 0.9);
+  --dialog-overlay: oklch(0.12 0.02 255 / 0.4);
+  --shadow-form: 0 20px 60px -20px oklch(0.1 0.02 255 / 0.4), 0 1px 0 oklch(1 0 0 / 0.1) inset;
   --primary: oklch(0.929 0.013 255.508);
   --primary-foreground: oklch(0.208 0.042 265.755);
   --secondary: oklch(0.279 0.041 260.031);
@@ -172,4 +193,17 @@
   backdrop-filter: blur(20px) saturate(160%);
   border: 1px solid oklch(1 0 0 / 0.7);
   box-shadow: var(--shadow-glass);
+}
+
+@utility form-glass {
+  background: var(--form-surface);
+  backdrop-filter: blur(24px) saturate(140%);
+  border: 1px solid var(--form-edge);
+  box-shadow: var(--shadow-form);
+
+  & input:not([type="checkbox"]),
+  & textarea {
+    background: var(--form-field);
+    border-color: var(--form-edge);
+  }
 }
