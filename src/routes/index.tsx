@@ -402,7 +402,7 @@ function EventoForm({ vacantes, initial, onSave, onDelete }: { vacantes: Vacante
         <FormSelect label="Tipo de evento" value={f.tipo} options={EVENT_TYPES}
           onValueChange={(tipo) => setF({ ...f, tipo })} />
       </Field>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid gap-4 sm:grid-cols-2">
         <Field label="Fecha"><Input required type="date" value={f.fecha} onChange={(e) => setF({ ...f, fecha: e.target.value })} /></Field>
         <Field label="Hora">
           <div className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-1">
