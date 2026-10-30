@@ -156,8 +156,9 @@ function Index() {
           {feedbackFor && (
             <FeedbackForm
               v={feedbackFor}
+              onCancel={() => setFeedbackFor(null)}
               onSave={(fb) => {
-                setVacantes((a) => a.map((x) => (x.id === feedbackFor.id ? { ...x, feedback: fb } : x)));
+                setVacantes((a) => a.map((x) => (x.id === feedbackFor.id ? { ...x, feedback: isFeedbackEmpty(fb) ? undefined : fb } : x)));
                 setFeedbackFor(null);
               }}
             />
@@ -182,9 +183,9 @@ function Index() {
                 <h3 className="font-semibold">Retroalimentación</h3>
                 {viewOld.feedback ? (
                   <>
-                    <Info k="¿Qué ocurrió?" v={viewOld.feedback.ocurrio} />
-                    <Info k="¿Qué hizo falta para avanzar?" v={viewOld.feedback.falto} />
-                    <Info k="¿Qué podría mejorar?" v={viewOld.feedback.mejorar} />
+                    <Info k="¿Cuál fue el motivo comunicado por la empresa para descartar mi candidatura?" v={viewOld.feedback.ocurrio} />
+                    <Info k="¿En que parte del proceso me sentí menos preparada?" v={viewOld.feedback.falto} />
+                    <Info k="Habilidad(es) técnica(s) o blandas que no logré demostrar" v={viewOld.feedback.mejorar} />
                   </>
                 ) : (
                   <p className="text-muted-foreground">Sin retroalimentación registrada.</p>
@@ -288,7 +289,7 @@ function VacanteForm({ initial, onSave, onDelete }: { initial?: Vacante | undefi
   );
 }
 
-function FeedbackForm({ v, onSave }: { v: Vacante; onSave: (f: Feedback) => void }) {
+function FeedbackForm({ v, onSave, onCancel }: { v: Vacante; onSave: (f: Feedback) => void; onCancel: () => void }) {
   const [f, setF] = useState<Feedback>(v.feedback ?? { ocurrio: "", falto: "", mejorar: "" });
   return (
     <form onSubmit={(e) => { e.preventDefault(); onSave(f); }} className="space-y-4">
@@ -296,10 +297,14 @@ function FeedbackForm({ v, onSave }: { v: Vacante; onSave: (f: Feedback) => void
         <DialogTitle>Retroalimentación del proceso</DialogTitle>
         <DialogDescription>{v.puesto} · {v.empresa}</DialogDescription>
       </DialogHeader>
+      <p className="text-sm text-muted-foreground">Las respuestas son opcionales: puedes guardar o cerrar sin completar ningún campo.</p>
       <Field label=" ¿Cuál fue el motivo comunicado por la empresa para descartar mi candidatura?"><Textarea value={f.ocurrio} onChange={(e) => setF({ ...f, ocurrio: e.target.value })} /></Field>
       <Field label="¿En que parte del proceso me sentí menos preparada?"><Textarea value={f.falto} onChange={(e) => setF({ ...f, falto: e.target.value })} /></Field>
       <Field label="Habilidad(es) técnica(s) o blandas que no logré demostrar"><Textarea value={f.mejorar} onChange={(e) => setF({ ...f, mejorar: e.target.value })} /></Field>
-      <div className="flex justify-end"><Button type="submit">Guardar</Button></div>
+      <div className="flex flex-wrap justify-end gap-2">
+        <Button type="button" variant="outline" onClick={onCancel}>Cerrar sin guardar</Button>
+        <Button type="submit">Guardar</Button>
+      </div>
     </form>
   );
 }
