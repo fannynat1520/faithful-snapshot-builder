@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { FormSelect } from "@/components/form-select";
+import { HOURS_24, MINUTES, updateTimePart } from "@/lib/time-options";
 import { cn } from "@/lib/utils";
 import {
   EVENT_TYPES, STATUS_GROUPS, hasPendingEvent, isAntigua, matches, statusTone,
@@ -41,8 +43,6 @@ function useStored<T>(key: string, initial: T) {
 }
 
 const uid = () => Math.random().toString(36).slice(2, 10);
-const selectCls =
-  "h-10 w-full rounded-xl border border-input bg-background/70 px-3 text-sm outline-none focus:ring-2 focus:ring-ring";
 const toneBorder = { orange: "border-st-orange", yellow: "border-st-yellow", green: "border-st-green", gray: "border-st-gray" };
 const toneBg = { orange: "bg-st-orange", yellow: "bg-st-yellow", green: "bg-st-green", gray: "bg-st-gray" };
 
@@ -136,7 +136,7 @@ function Index() {
       )}
 
       <Dialog open={editing !== null} onOpenChange={(o) => !o && setEditing(null)}>
-        <DialogContent className="glass max-h-[90vh] overflow-y-auto rounded-3xl">
+        <DialogContent className="form-glass max-h-[90vh] w-[calc(100%-2rem)] overflow-y-auto rounded-3xl">
           {editing !== null && (
             <VacanteForm
               initial={editing === "new" ? undefined : editing}
@@ -152,7 +152,7 @@ function Index() {
       </Dialog>
 
       <Dialog open={!!feedbackFor} onOpenChange={(o) => !o && setFeedbackFor(null)}>
-        <DialogContent className="glass rounded-3xl">
+        <DialogContent className="form-glass max-h-[90vh] w-[calc(100%-2rem)] overflow-y-auto rounded-3xl">
           {feedbackFor && (
             <FeedbackForm
               v={feedbackFor}
@@ -166,7 +166,7 @@ function Index() {
       </Dialog>
 
       <Dialog open={!!viewOld} onOpenChange={(o) => !o && setViewOld(null)}>
-        <DialogContent className="glass rounded-3xl">
+        <DialogContent className="form-glass max-h-[90vh] w-[calc(100%-2rem)] overflow-y-auto rounded-3xl">
           {viewOld && (
             <>
               <DialogHeader>
@@ -178,7 +178,7 @@ function Index() {
                 <Info k="Medio" v={viewOld.medio} />
                 <Info k="Estado" v={`${viewOld.grupo} · ${viewOld.estado}`} />
               </dl>
-              <div className="space-y-3 rounded-2xl bg-muted/60 p-4 text-sm">
+              <div className="space-y-3 rounded-2xl border border-form-edge bg-form-field p-4 text-sm">
                 <h3 className="font-semibold">Retroalimentación</h3>
                 {viewOld.feedback ? (
                   <>
@@ -266,16 +266,14 @@ function VacanteForm({ initial, onSave, onDelete }: { initial?: Vacante | undefi
       <Field label="Nombre del reclutador"><Input required value={f.reclutador} onChange={set("reclutador")} /></Field>
       <div className="grid gap-4 sm:grid-cols-2">
         <Field label="Estado del proceso">
-          <select required className={selectCls} value={f.grupo} onChange={(e) => setF({ ...f, grupo: e.target.value as Group, estado: "" })}>
-            <option value="" disabled>Selecciona</option>
-            {Object.keys(STATUS_GROUPS).map((g) => <option key={g}>{g}</option>)}
-          </select>
+          <FormSelect label="Estado del proceso" value={f.grupo}
+            onValueChange={(grupo) => setF({ ...f, grupo: grupo as Group, estado: "" })}
+            options={Object.keys(STATUS_GROUPS)} />
         </Field>
         <Field label="Estado específico">
-          <select required disabled={!f.grupo} className={selectCls} value={f.estado} onChange={set("estado")}>
-            <option value="" disabled>Selecciona</option>
-            {f.grupo && STATUS_GROUPS[f.grupo].map((s) => <option key={s}>{s}</option>)}
-          </select>
+          <FormSelect label="Estado específico" value={f.estado} disabled={!f.grupo}
+            onValueChange={(estado) => setF({ ...f, estado })}
+            options={f.grupo ? STATUS_GROUPS[f.grupo] : []} />
         </Field>
       </div>
       <div className="flex justify-between gap-2 pt-2">
@@ -369,7 +367,7 @@ function Calendar({ vacantes, eventos, setEventos }: { vacantes: Vacante[]; even
       </div>
 
       <Dialog open={editing !== null} onOpenChange={(o) => !o && setEditing(null)}>
-        <DialogContent className="glass rounded-3xl">
+        <DialogContent className="form-glass max-h-[90vh] w-[calc(100%-2rem)] overflow-y-auto rounded-3xl">
           {editing !== null && (
             <EventoForm
               vacantes={vacantes}
@@ -392,26 +390,29 @@ function EventoForm({ vacantes, initial, onSave, onDelete }: { vacantes: Vacante
     <form onSubmit={(e) => { e.preventDefault(); onSave(f); }} className="space-y-4">
       <DialogHeader><DialogTitle>{initial ? "Detalle del evento" : "Agregar evento"}</DialogTitle></DialogHeader>
       <Field label="Nombre de la empresa">
-        <select required className={selectCls} value={empresa} onChange={(e) => { setEmpresa(e.target.value); setF({ ...f, vacanteId: "" }); }}>
-          <option value="" disabled>Selecciona</option>
-          {empresas.map((x) => <option key={x}>{x}</option>)}
-        </select>
+        <FormSelect label="Nombre de la empresa" value={empresa} options={empresas}
+          onValueChange={(value) => { setEmpresa(value); setF({ ...f, vacanteId: "" }); }} />
       </Field>
       <Field label="Nombre de la vacante">
-        <select required disabled={!empresa} className={selectCls} value={f.vacanteId} onChange={(e) => setF({ ...f, vacanteId: e.target.value })}>
-          <option value="" disabled>Selecciona</option>
-          {vacantes.filter((v) => v.empresa === empresa).map((v) => <option key={v.id} value={v.id}>{v.puesto}</option>)}
-        </select>
+        <FormSelect label="Nombre de la vacante" value={f.vacanteId} disabled={!empresa}
+          onValueChange={(vacanteId) => setF({ ...f, vacanteId })}
+          options={vacantes.filter((v) => v.empresa === empresa).map((v) => ({ value: v.id, label: v.puesto }))} />
       </Field>
       <Field label="Tipo de evento">
-        <select required className={selectCls} value={f.tipo} onChange={(e) => setF({ ...f, tipo: e.target.value })}>
-          <option value="" disabled>Selecciona</option>
-          {EVENT_TYPES.map((t) => <option key={t}>{t}</option>)}
-        </select>
+        <FormSelect label="Tipo de evento" value={f.tipo} options={EVENT_TYPES}
+          onValueChange={(tipo) => setF({ ...f, tipo })} />
       </Field>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid gap-4 sm:grid-cols-2">
         <Field label="Fecha"><Input required type="date" value={f.fecha} onChange={(e) => setF({ ...f, fecha: e.target.value })} /></Field>
-        <Field label="Hora"><Input required type="time" value={f.hora} onChange={(e) => setF({ ...f, hora: e.target.value })} /></Field>
+        <Field label="Hora">
+          <div className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-1">
+            <FormSelect label="Hora (00–23)" placeholder="HH" value={f.hora.split(":")[0] || ""}
+              options={HOURS_24} onValueChange={(hour) => setF({ ...f, hora: updateTimePart(f.hora, "hour", hour) })} />
+            <span aria-hidden="true" className="text-muted-foreground">:</span>
+            <FormSelect label="Minutos" placeholder="mm" value={f.hora.split(":")[1] || ""}
+              options={MINUTES} onValueChange={(minute) => setF({ ...f, hora: updateTimePart(f.hora, "minute", minute) })} />
+          </div>
+        </Field>
       </div>
       {initial && (
         <label className="flex items-center gap-2 text-sm">
