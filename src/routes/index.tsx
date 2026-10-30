@@ -262,7 +262,7 @@ function VacanteForm({ initial, onSave, onDelete }: { initial?: Vacante | undefi
       </DialogHeader>
       <Field label="Empresa"><Input required value={f.empresa} onChange={set("empresa")} /></Field>
       <Field label="Nombre de la vacante"><Input required value={f.puesto} onChange={set("puesto")} /></Field>
-      <Field label="Medio de comunicación"><Input required placeholder="LinkedIn, correo, WhatsApp…" value={f.medio} onChange={set("medio")} /></Field>
+      <Field label="Contacto mediante"><Input required placeholder="LinkedIn, correo, WhatsApp…" value={f.medio} onChange={set("medio")} /></Field>
       <Field label="Nombre del reclutador"><Input required value={f.reclutador} onChange={set("reclutador")} /></Field>
       <div className="grid gap-4 sm:grid-cols-2">
         <Field label="Estado del proceso">
