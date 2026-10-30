@@ -334,7 +334,7 @@ function Calendar({ vacantes, eventos, setEventos }: { vacantes: Vacante[]; even
         </Button>
       </div>
       {noVacantes && (
-        <p className="mb-4 rounded-2xl bg-st-orange/40 p-3 text-sm">Primero debes agregar una vacante para poder crear eventos.</p>
+        <p className="mb-4 rounded-2xl bg-st-amber/40 p-3 text-sm">Primero debes agregar una vacante para poder crear eventos.</p>
       )}
       <div className="glass overflow-hidden rounded-3xl">
         <div className="grid grid-cols-7 border-b border-border text-center text-xs font-semibold text-muted-foreground">

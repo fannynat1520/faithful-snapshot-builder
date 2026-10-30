@@ -53,6 +53,7 @@
   --color-chart-5: var(--chart-5);
   --color-glow: var(--glow);
   --color-st-orange: var(--st-orange);
+  --color-st-amber: var(--st-amber);
   --color-st-yellow: var(--st-yellow);
   --color-st-green: var(--st-green);
   --color-st-gray: var(--st-gray);
@@ -97,7 +98,8 @@
   --input: oklch(0.9 0.02 258);
   --ring: oklch(0.7 0.08 258);
   --glow: oklch(0.88 0.05 258); /* #C4DAFA */
-  --st-orange: oklch(0.85 0.13 75); /* #FFC067 */
+  --st-orange: oklch(0.7237 0.1712 25.55); /* #FF746C */
+  --st-amber: oklch(0.85 0.13 75); /* #FFC067 — aviso de calendario, no un estado */
   --st-yellow: oklch(0.94 0.12 100); /* #FFEE8C */
   --st-green: oklch(0.86 0.16 145); /* #88E788 */
   --st-gray: oklch(0.87 0 0); /* #D3D3D3 */
