@@ -298,7 +298,7 @@ function FeedbackForm({ v, onSave }: { v: Vacante; onSave: (f: Feedback) => void
       </DialogHeader>
       <Field label=" ¿Cuál fue el motivo comunicado por la empresa para descartar mi candidatura?"><Textarea value={f.ocurrio} onChange={(e) => setF({ ...f, ocurrio: e.target.value })} /></Field>
       <Field label="¿En que parte del proceso me sentí menos preparada?"><Textarea value={f.falto} onChange={(e) => setF({ ...f, falto: e.target.value })} /></Field>
-      <Field label="Habilidad(es) técnica(s) que no logré demostrar"><Textarea value={f.mejorar} onChange={(e) => setF({ ...f, mejorar: e.target.value })} /></Field>
+      <Field label="Habilidad(es) técnica(s) o blandas que no logré demostrar"><Textarea value={f.mejorar} onChange={(e) => setF({ ...f, mejorar: e.target.value })} /></Field>
       <div className="flex justify-end"><Button type="submit">Guardar</Button></div>
     </form>
   );
